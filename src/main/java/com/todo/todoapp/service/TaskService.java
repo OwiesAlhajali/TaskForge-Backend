@@ -1,5 +1,6 @@
 package com.todo.todoapp.service;
 
+import com.todo.todoapp.exception.TaskNotFoundException;
 import com.todo.todoapp.model.Task;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class TaskService {
                 return task;
             }
         }
-        return null;
+        throw new TaskNotFoundException("Task with id" + id + "Not found..") ;
     }
     public boolean deleteTask (int id){
         return tasks.removeIf(task->task.getId()==id);
