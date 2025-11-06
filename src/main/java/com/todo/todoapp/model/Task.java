@@ -1,10 +1,20 @@
 package com.todo.todoapp.model;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
+@Entity
+@Table(name="tasks")
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Title is required ")
+    @Size(min = 3,max = 90,message = "Title must be 3-50 Chars")
     private String title;
     private boolean completed;
-
+    // empty constactor is important For JPA "java persistence API "
+    public Task (){}
     // Constructor
     public Task(int id, String title, boolean completed) {
         this.id = id;

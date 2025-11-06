@@ -2,6 +2,7 @@ package com.todo.todoapp.controller;
 
 import com.todo.todoapp.model.Task;
 import com.todo.todoapp.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -34,7 +35,7 @@ public class TaskController {
     // Add New task Using post req
 
     @PostMapping("/tasks")
-    public ResponseEntity <Task> addTask(@RequestBody Task newTask)
+    public ResponseEntity <Task> addTask(@Valid @RequestBody Task newTask)
     {
         if(newTask.getTitle()==null || newTask.getTitle().isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

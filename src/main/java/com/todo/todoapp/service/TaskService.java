@@ -2,6 +2,8 @@ package com.todo.todoapp.service;
 
 import com.todo.todoapp.exception.TaskNotFoundException;
 import com.todo.todoapp.model.Task;
+import com.todo.todoapp.repository.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,30 +12,27 @@ import java.util.List;
 @Service
 
 public class TaskService {
-    private List<Task> tasks = new ArrayList<>(List.of
-
-            (new Task(1,"spring",false) ,
-            new Task (2,"java",true))
-    );
+@Autowired
+private TaskRepository repo ;
     public List<Task> getAlltasks(){
-        return tasks ;
+        return repo.findAll() ;
     }
     public Task addTask (Task newTask){
-        tasks.add(newTask);
-        return newTask ;
+        return repo.save(newTask);
     }
     public Task UpdateTask(int id, Task updatedTask) {
-        for (Task task : tasks) {
-            if (task.getId() == id) {
-                if (updatedTask.getTitle() != null)
-                    task.setTitle(updatedTask.getTitle());
-                task.setCompleted(updatedTask.isCompleted());
-                return task;
-            }
+        Task task=repo.findById(id)
+                .orElseThrow(()->new TaskNotFoundException("task with this id" +id+ "Not Found.."));
+        if(updatedTask.getTitle()!=null){
+            task.setTitle(updatedTask.getTitle());
         }
-        throw new TaskNotFoundException("Task with id" + id + "Not found..") ;
+        task.setCompleted(updatedTask.isCompleted());
+        return repo.save(task);
     }
     public boolean deleteTask (int id){
-        return tasks.removeIf(task->task.getId()==id);
+        if(!repo.existsById(id))
+            return false;
+        repo.deleteById(id);
+        return true ;
     }
 }
