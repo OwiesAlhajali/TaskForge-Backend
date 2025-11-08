@@ -21,6 +21,9 @@ public class Task {
         this.title = title;
         this.completed = completed;
     }
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user ;
 
     // Getters
     public int getId() { return id; }
