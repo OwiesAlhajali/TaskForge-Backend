@@ -1,4 +1,5 @@
 package com.todo.todoapp.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,6 +24,7 @@ public class Task {
     }
     @ManyToOne
     @JoinColumn(name="user_id")
+    @JsonBackReference
     private User user ;
     public User getUser(){
         return user ;

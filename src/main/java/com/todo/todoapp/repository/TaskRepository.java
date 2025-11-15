@@ -11,6 +11,8 @@ public interface TaskRepository extends JpaRepository<Task,Integer> {
     List<Task> findByCompletedFalse();
     List<Task> findByTitleContaining(String Keyword);
     List<Task> findByTitleStartingWith(String Prefix) ;
+
+    List<Task> findByUserId(int userId); // Select* form tasks where user id =?
 }
 // the first one is : select from Task where Title =? ;
 // the secound one is : select from Task where Completed = True ;

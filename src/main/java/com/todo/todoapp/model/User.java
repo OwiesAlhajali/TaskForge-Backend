@@ -1,5 +1,6 @@
 package com.todo.todoapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class User {
     private int id ;
     private String name ;
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Task> tasks ;
     public User (){}
     public User(int id , String name ){

@@ -1,6 +1,7 @@
 package com.todo.todoapp.controller;
+import com.todo.todoapp.model.Task;
 import com.todo.todoapp.model.User;
-import com.todo.todoapp.repository.UserRepository;
+import com.todo.todoapp.service.TaskService;
 import com.todo.todoapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserService userService ;
+    private  UserService userService ;
+    @Autowired
+    private TaskService taskService ;
     // Add new User ..
     @PostMapping
     public ResponseEntity<User> addUser(@Valid @RequestBody User newUser){
@@ -53,5 +56,18 @@ public class UserController {
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+   }
+   @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<Task>> getTaskForUser(@PathVariable int id){
+        List<Task> tasks = taskService.getTasksForUser(id);
+        if(tasks.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(tasks);
+   }
+   @PostMapping("/{id}/tasks")
+    public ResponseEntity<Task> addTaskForUser(@PathVariable int id, @RequestBody Task newTask){
+        Task saved = taskService.addTaskForUser(id,newTask);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
    }
 }
